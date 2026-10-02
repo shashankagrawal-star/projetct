@@ -1,0 +1,25 @@
+# Render blueprint: New + → Blueprint → select this repo. Then set ANTHROPIC_API_KEY in the dashboard.
+services:
+  - type: web
+    name: migration-workbench
+    runtime: docker
+    plan: free            # free tier has no persistent disk: state resets on redeploy/spin-down (fine for review)
+    healthCheckPath: /api/health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false        # secret: entered in the dashboard, never committed
+      - key: AGENT_MODE
+        value: auto
+      - key: ANTHROPIC_MODEL
+        value: claude-opus-5-5
+      - key: ANTHROPIC_EFFORT
+        value: medium
+      - key: AGENT_RUN_LIMIT_PER_HOUR
+        value: "20"
+      - key: LOG_LEVEL
+        value: info
+    # For durable state on a paid plan, uncomment:
+    # disk:
+    #   name: workbench-data
+    #   mountPath: /app/data/runtime
+    #   sizeGB: 1

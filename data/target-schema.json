@@ -1,0 +1,21 @@
+{
+  "name": "customers",
+  "description": "New CRM customer table (mock staging store). Constraints are enforced during dry run AND again by the store on load.",
+  "primaryKey": "id",
+  "fields": [
+    { "name": "id", "type": "string", "required": true, "unique": true, "pattern": "^cus_[A-Za-z0-9-]+$", "maxLength": 32, "description": "Customer id, must look like cus_<legacy id>." },
+    { "name": "first_name", "type": "string", "required": true, "maxLength": 60, "description": "Given name." },
+    { "name": "last_name", "type": "string", "required": true, "maxLength": 60, "description": "Family name." },
+    { "name": "email", "type": "string", "required": true, "unique": true, "pattern": "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$", "maxLength": 120, "description": "Lower-case e-mail. Unique across the whole customer table." },
+    { "name": "phone_e164", "type": "string", "required": false, "pattern": "^\\+[1-9][0-9]{7,14}$", "description": "Phone in E.164 format." },
+    { "name": "date_of_birth", "type": "date", "required": false, "description": "ISO date YYYY-MM-DD." },
+    { "name": "country_code", "type": "string", "required": true, "pattern": "^[A-Z]{2}$", "description": "ISO 3166-1 alpha-2 country code." },
+    { "name": "customer_since", "type": "date", "required": true, "description": "ISO date the customer was created." },
+    { "name": "status", "type": "enum", "required": true, "enum": ["active", "inactive", "suspended"], "description": "Account lifecycle status." },
+    { "name": "tier", "type": "enum", "required": true, "enum": ["standard", "premium", "vip"], "description": "Commercial tier. No direct legacy equivalent." },
+    { "name": "currency", "type": "enum", "required": true, "enum": ["INR", "USD", "EUR", "GBP"], "description": "ISO 4217 currency of the balance. Not present in the legacy export." },
+    { "name": "account_balance_minor", "type": "integer", "required": false, "description": "Balance in minor units (e.g. paise/cents) as an integer." },
+    { "name": "marketing_opt_in", "type": "boolean", "required": true, "description": "Marketing consent. Must be explicit." },
+    { "name": "address", "type": "string", "required": false, "maxLength": 60, "description": "Single-line address, at most 60 characters." }
+  ]
+}
